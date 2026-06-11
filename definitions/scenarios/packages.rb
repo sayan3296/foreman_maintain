@@ -106,6 +106,7 @@ module ForemanMaintain::Scenarios
         if Packages.skip_installer_run?(context.get(:packages))
           add_step_with_context(Procedures::Packages::Update,
             :force => true, :warn_on_errors => true)
+          add_step(Procedures::Packages::CheckForReboot)
         else
           unless context.get(:downloadonly)
             add_steps_with_context(
@@ -126,6 +127,7 @@ module ForemanMaintain::Scenarios
             add_step_with_context(Procedures::Packages::LockVersions)
           else
             add_step_with_context(Procedures::Installer::Run)
+            add_step(Procedures::Packages::CheckForReboot)
           end
 
           add_step(Procedures::Packages::LockingStatus)
